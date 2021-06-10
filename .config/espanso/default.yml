@@ -1,0 +1,48 @@
+# espanso configuration file
+
+# This is the default configuration file, change it as you like it
+# You can refer to the official documentation:
+# https://espanso.org/docs/
+
+# Matches are the substitution rules, when you type the "trigger" string
+# it gets replaced by the "replace" string.
+toggle_key: RIGHT_CTRL
+
+matches:
+  - trigger: ":fs"
+    replace: "Alexandr Burtsev"
+
+  # Best regards
+  - trigger: ":bre"
+    replace: |
+      Best regards,
+      Alexandr Burtsev
+
+  - trigger: ":lfr"
+    replace: "Looking forward to your response!
+
+
+  # Dates
+  - trigger: ":pd"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d"
+
+  - trigger: "!pd"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d"
+
+  - trigger: ":date"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%d.%m.%Y"
