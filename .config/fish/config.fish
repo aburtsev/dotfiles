@@ -4,7 +4,6 @@ set TERM "xterm-256color"              # Sets the terminal type
 set EDITOR "emacsclient -t -a ''"      # $EDITOR use Emacs in terminal
 set VISUAL "emacsclient -c -a emacs"   # $VISUAL use Emacs in GUI mode
 
-
 ### PROMPT ###
 # This was the 'sashimi' prompt from oh-my-fish.
 function fish_prompt
@@ -188,7 +187,7 @@ alias jctl="journalctl -p 3 -xb"
 # alias tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
 
 # bare git repo alias for dotfiles
-alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+alias dtfls="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 alias fd=fdfind
 
