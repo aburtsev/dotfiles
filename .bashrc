@@ -98,6 +98,7 @@ alias fd=fdfind
 
 
 alias dtfls='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias pdtfls='/usr/bin/git --git-dir=$HOME/.private_dotfiles/ --work-tree=$HOME'
 
 # confirm before overwriting something
 alias cp="cp -i"

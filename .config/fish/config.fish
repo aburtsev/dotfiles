@@ -188,6 +188,7 @@ alias jctl="journalctl -p 3 -xb"
 
 # bare git repo alias for dotfiles
 alias dtfls="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+alias pdtfls="/usr/bin/git --git-dir=$HOME/.private_dotfiles/ --work-tree=$HOME"
 
 alias fd=fdfind
 
