@@ -1,103 +1,14 @@
+### ADDING TO THE PATH
+# First line removes the path; second line sets it.  Without the first line,
+# your path gets massive and fish becomes very slow.
+# the next line break fzf
+# set -e fish_user_paths 
+set -U fish_user_paths $HOME/.deno/bin $HOME/.nvm/versions/node/v14.16.0/bin /opt/bin $fish_user_paths
 # set -U fish_user_paths $fish_user_paths $HOME/.local/bin/
 set fish_greeting                      # Supresses fish's intro message
 set TERM "xterm-256color"              # Sets the terminal type
 set EDITOR "emacsclient -t -a ''"      # $EDITOR use Emacs in terminal
 set VISUAL "emacsclient -c -a emacs"   # $VISUAL use Emacs in GUI mode
-
-### PROMPT ###
-# This was the 'sashimi' prompt from oh-my-fish.
-function fish_prompt
-  set -l last_status $status
-  set -l cyan (set_color -o 98be65)
-  set -l yellow (set_color -o yellow)
-  set -g red (set_color -o 98be65)
-  set -g blue (set_color -o blue)
-  set -l green (set_color -o green)
-  set -g normal (set_color magenta)
-
-  set -l ahead (_git_ahead)
-  set -g whitespace ' '
-
-  if test $last_status = 0
-    set initial_indicator "$green◆"
-    set status_indicator "$normal❯$cyan❯$green❯"
-  else
-    set initial_indicator "$red✖ $last_status"
-    set status_indicator "$red❯$red❯$red❯"
-  end
-  set -l cwd $cyan(basename (prompt_pwd))
-
-  if [ (_git_branch_name) ]
-    if test (_git_branch_name) = 'master'
-      set -l git_branch (_git_branch_name)
-      set git_info "$normal git:($red$git_branch$normal)"
-    else
-      set -l git_branch (_git_branch_name)
-      set git_info "$normal git:($blue$git_branch$normal)"
-    end
-    if [ (_is_git_dirty) ]
-      set -l dirty "$yellow ✗"
-      set git_info "$git_info$dirty"
-    end
-  end
-  # Notify if a command took more than 5 minutes
-  if [ "$CMD_DURATION" -gt 300000 ]
-    echo The last command took (math "$CMD_DURATION/1000") seconds.
-  end
-
-  echo -n -s $initial_indicator $whitespace $cwd $git_info $whitespace $ahead $status_indicator $whitespace
-end
-
-function _git_ahead
-  set -l commits (command git rev-list --left-right '@{upstream}...HEAD' ^/dev/null)
-  if [ $status != 0 ]
-    return
-  end
-  set -l behind (count (for arg in $commits; echo $arg; end | grep '^<'))
-  set -l ahead  (count (for arg in $commits; echo $arg; end | grep -v '^<'))
-  switch "$ahead $behind"
-    case ''     # no upstream
-    case '0 0'  # equal to upstream
-      return
-    case '* 0'  # ahead of upstream
-      echo "$blue↑$normal_c$ahead$whitespace"
-    case '0 *'  # behind upstream
-      echo "$red↓$normal_c$behind$whitespace"
-    case '*'    # diverged from upstream
-      echo "$blue↑$normal$ahead $red↓$normal_c$behind$whitespace"
-  end
-end
-
-function _git_branch_name
-  echo (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
-end
-
-function _is_git_dirty
-  echo (command git status -s --ignore-submodules=dirty ^/dev/null)
-end
-
-function fish_mode_prompt
-  switch $fish_bind_mode
-    case default
-      set_color --bold red
-      echo '(N) '
-    case insert
-      set_color --bold green
-      echo '(I) '
-    case replace_one
-      set_color --bold green
-      echo '(R) '
-    case visual
-      set_color --bold brmagenta
-      echo '(V) '
-    case '*'
-      set_color --bold red
-      echo '(?) '
-  end
-  set_color normal
-end
-### END OF PROMPT ###
-
 
 ### DEFAULT EMACS MODE OR VI MODE ###
 # function fish_user_key_bindings
@@ -106,11 +17,20 @@ end
 # end
 ### END OF VI MODE ###
 
+### AUTOCOMPLETE AND HIGHLIGHT COLORS ###
+set fish_color_normal brcyan
+set fish_color_autosuggestion '#7d7d7d'
+set fish_color_command brcyan
+set fish_color_error '#ff6c6b'
+set fish_color_param brcyan
+
+
 ### FUNCTIONS ###
+function commits
+    git log --author="$argv" --format=format:%ad --date=short | uniq -c | awk '{print $1}' | spark | lolcat
+end
 
 # Functions needed for !! and !$
-# Will only work in default (emacs) mode.
-# Will NOT work in vi mode.
 function __history_previous_command
   switch (commandline -t)
   case "!"
@@ -130,25 +50,30 @@ function __history_previous_command_arguments
   end
 end
 # The bindings for !! and !$
-bind ! __history_previous_command
-bind '$' __history_previous_command_arguments
+if [ $fish_key_bindings = fish_vi_key_bindings ];
+  bind -Minsert ! __history_previous_command
+  bind -Minsert '$' __history_previous_command_arguments
+else
+  bind ! __history_previous_command
+  bind '$' __history_previous_command_arguments
+end
+
 
 # Function for creating a backup file
 # ex: backup file.txt
 # result: copies file as file.txt.bak
 function backup --argument filename
-    cp $filename $filename.bak
+    cp $filename $filename_bak
 end
-
 ### ALIASES ###
 
 # vim and emacs
 alias vim='nvim'
 # alias em='/usr/bin/emacs -nw'
 # alias emacs="emacsclient -c -a 'emacs'"
-# alias doomsync="~/.emacs.d/bin/doom sync"
+alias doomsync="~/.emacs.d/bin/doom sync"
 # alias doomdoctor="~/.emacs.d/bin/doom doctor"
-# alias doomupgrade="~/.emacs.d/bin/doom upgrade"
+alias doomupgrade="~/.emacs.d/bin/doom upgrade"
 # alias doompurge="~/.emacs.d/bin/doom purge"
 
 # broot
@@ -192,4 +117,16 @@ alias pdtfls="/usr/bin/git --git-dir=$HOME/.private_dotfiles/ --work-tree=$HOME"
 
 alias fd=fdfind
 
-set -U fish_user_paths $HOME/.deno/bin $HOME/.nvm/versions/node/v14.16.0/bin $fish_user_paths
+## get top process eating memory
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
+## get top process eating cpu ##
+alias pscpu='ps auxf | sort -nr -k 3'
+alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
+
+# get error messages from journalctl
+alias jctl="journalctl -p 3 -xb"
+
+### SETTING THE STARSHIP PROMPT ###
+starship init fish | source
