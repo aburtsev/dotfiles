@@ -444,7 +444,7 @@ myStartupHook = do
 --    spawnOnce "compton &"
     spawnOnce "nm-applet &"
     spawnOnce "volumeicon &"
-    spawnOnce "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 0 --transparent true --alpha 0 --tint 0x282c34  --height 33 &"
+    spawnOnce "trayer --edge top --align right --widthtype request --padding 4 --SetDockType true --SetPartialStrut true --expand true --monitor 0 --transparent true --alpha 0 --tint 0x282c34  --height 20 &"
 
 ------------------------------------------------------------------------
 
@@ -468,7 +468,7 @@ spawnSelected' lst = gridselect conf lst >>= flip whenJust spawn
 main :: IO ()
 main = do
     xmproc0 <- spawnPipe "xmobar -x 0 /home/burtsev/.config/xmobar/xmobar-main.config"
-    -- xmproc1 <- spawnPipe "xmobar -x 1 /home/burtsev/.config/xmobar/xmobar.config"
+    xmproc1 <- spawnPipe "xmobar -x 1 /home/burtsev/.config/xmobar/xmobar.config"
     xmonad $ ewmh def
        { manageHook = ( isFullscreen --> doFullFloat ) <+> myManageHook <+> manageDocks,
         terminal           = myTerminal,
@@ -487,8 +487,8 @@ main = do
                                <+> serverModeEventHookF "XMONAD_PRINT" (io . putStrLn)
                                <+> docksEventHook,
         logHook =  myLogHook <+> dynamicLogWithPP xmobarPP
-                        -- { ppOutput = \x -> hPutStrLn xmproc0 x  >> hPutStrLn xmproc1 x
-                        { ppOutput = \x -> hPutStrLn xmproc0 x  
+                        { ppOutput = \x -> hPutStrLn xmproc0 x  >> hPutStrLn xmproc1 x
+                        -- { ppOutput = \x -> hPutStrLn xmproc0 x  
                         , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"           -- Current workspace in xmobar
                         , ppVisible = xmobarColor "#98be65" "" . clickable              -- Visible but not current workspace
                         , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" . clickable -- Hidden workspaces in xmobar
