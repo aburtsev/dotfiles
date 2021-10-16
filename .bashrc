@@ -137,6 +137,7 @@ export NVM_DIR="$HOME/.nvm"
 
 export DENO_INSTALL="/home/burtsev/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
+export PATH="/opt/bin:$PATH"
 
 
 ### ARCHIVE EXTRACTION
@@ -165,3 +166,5 @@ ex ()
     echo "'$1' is not a valid file"
   fi
 }
+
+eval "$(starship init bash)"
