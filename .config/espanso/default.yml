@@ -22,15 +22,6 @@ matches:
     replace: "Looking forward to your response!"
 
 
-  # Dates
-  - trigger: ":pd"
-    replace: "{{mydate}}"
-    vars:
-      - name: mydate
-        type: date
-        params:
-          format: "%Y-%m-%d"
-
   - trigger: "!pd"
     replace: "{{mydate}}"
     vars:
@@ -39,10 +30,18 @@ matches:
         params:
           format: "%Y-%m-%d"
 
-  - trigger: ":date"
+  - trigger: "!date"
     replace: "{{mydate}}"
     vars:
       - name: mydate
         type: date
         params:
           format: "%d.%m.%Y"
+
+  - trigger: "!uid"
+    replace: "{{uid}}"
+    vars:
+      - name: uid
+        type: date
+        params:
+          format: "%Y%m%d%H%M%S%f"
