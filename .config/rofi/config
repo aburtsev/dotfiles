@@ -1,3 +1,4 @@
 # rofi.theme: /usr/share/rofi/themes/Monokai.rasi
 rofi.theme: ~/.config/rofi/themes/dt-center.rasi
+# rofi.theme: ~/.config/rofi/themes/dt-center_HIDPI.rasi
 # rofi.theme: ~/.config/rofi/themes/dt-dmenu.rasi

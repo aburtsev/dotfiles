@@ -444,7 +444,9 @@ myStartupHook = do
 --    spawnOnce "compton &"
     spawnOnce "nm-applet &"
     spawnOnce "volumeicon &"
-    spawnOnce "trayer --edge top --align right --widthtype request --padding 4 --SetDockType true --SetPartialStrut true --expand true --monitor 0 --transparent true --alpha 0 --tint 0x282c34  --height 20 &"
+    -- spawnOnce "trayer --edge top --align right --widthtype request --padding 4 --SetDockType true --SetPartialStrut true --expand true --monitor 0 --transparent true --alpha 0 --tint 0x282c34  --height 33 &"
+    spawnOnce "trayer --edge top --align right --widthtype request --padding 3 --SetDockType true --SetPartialStrut true --expand true --monitor 0 --transparent true --alpha 0 --tint 0x282c34  --height 20 &"
+    spawnOnce "dropbox start"
 
 ------------------------------------------------------------------------
 
@@ -488,7 +490,7 @@ main = do
                                <+> docksEventHook,
         logHook =  myLogHook <+> dynamicLogWithPP xmobarPP
                         { ppOutput = \x -> hPutStrLn xmproc0 x  >> hPutStrLn xmproc1 x
-                        -- { ppOutput = \x -> hPutStrLn xmproc0 x  
+                        -- { ppOutput = \x -> hPutStrLn xmproc0 x
                         , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"           -- Current workspace in xmobar
                         , ppVisible = xmobarColor "#98be65" "" . clickable              -- Visible but not current workspace
                         , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" . clickable -- Hidden workspaces in xmobar

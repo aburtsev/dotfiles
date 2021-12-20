@@ -3,7 +3,7 @@
 # your path gets massive and fish becomes very slow.
 # the next line break fzf
 # set -e fish_user_paths 
-set -U fish_user_paths $HOME/.deno/bin $HOME/.nvm/versions/node/v14.16.0/bin /opt/bin $fish_user_paths
+set -U fish_user_paths $HOME/.deno/bin $HOME/.nvm/versions/node/v16.13.1/bin /opt/bin $fish_user_paths
 # set -U fish_user_paths $fish_user_paths $HOME/.local/bin/
 set fish_greeting                      # Supresses fish's intro message
 set TERM "xterm-256color"              # Sets the terminal type
